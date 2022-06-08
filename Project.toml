@@ -4,8 +4,12 @@ authors = ["Thomas Wutzler <bgctw@arcor.de>"]
 version = "0.1.0"
 
 [deps]
+ComponentArrays = "b0b7db55-cfe3-40fc-9ded-d10e2dbeff66"
+KernelDensity = "5ab0869b-81aa-558d-bb23-cbf5423bbe9b"
+Parameters = "d96e819e-fc66-5662-9728-84c9c7592b0a"
 Pkg = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
+Requires = "ae029012-a4dd-5104-9daa-d747884805df"
 SimpleTraits = "699a6c99-e7fa-54fc-8d76-47d257e15c1d"
 
 [compat]
-julia = "1.5"
+julia = "1.6"
