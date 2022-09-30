@@ -7,6 +7,7 @@ makedocs(sitename="TwPrototypes.jl",
          pages = [
             "Home" => "index.md",
             "Pkg utilities" => "pkg_utils.md",
+            "Data management" => "data_management.md",
             "Dispatch" => "isofeltype.md",
          ],
          modules = [TwPrototypes],

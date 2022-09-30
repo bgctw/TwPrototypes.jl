@@ -18,12 +18,17 @@ export set_default_CMTheme!, draw_with_legend!
 export passnothing, named_componentvector
 
 export Chains_section, add_vars, chainscat_resample, chains_par, rename_chain_pars
+export construct_chains_from_csv
 
 
 using SimpleTraits    
+using DataFrames
 import Pkg
 using Requires: @require 
 import ComponentArrays as CA
+import CSV
+using Infiltrator
+
 
 function __init__()
     @require CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0" begin
@@ -40,6 +45,7 @@ end
 include("isofeltype.jl")
 include("pkg_utils.jl")
 include("util.jl")
+include("data_management.jl")
 
 
 

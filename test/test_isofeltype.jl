@@ -1,6 +1,6 @@
 using Test
 using TwPrototypes
-using SimpleTraits
+import SimpleTraits as ST
 
 # @traitfn not working inside @testset
 
@@ -8,8 +8,8 @@ using SimpleTraits
 @testset "isofeltype" begin
     
 @testset "dummy" begin
-    @test istrait(IsOfEltype{Int64}) 
-    @test !istrait(IsOfEltype{Float64})
+    @test ST.istrait(IsOfEltype{Int64}) 
+    @test !ST.istrait(IsOfEltype{Float64})
 end;
 
 end; # isofeltype
