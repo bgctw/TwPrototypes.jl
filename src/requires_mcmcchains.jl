@@ -37,18 +37,30 @@ end
 """
     chainscat_resample(chns) 
 
-concatenate chains and resample longer chains, only keep intersection of variables
+concatenate chains and resample longer chains, only keep intersection of variables.
+Sections are taken from first chain.
 """
 function chainscat_resample(chns) 
     # reduce to subset of variables
     par_names = names.(chns)
     par_names_int = reduce(intersect, par_names)
-    i_chn_morevars = length.(par_names) .> length(par_names_int)
-    chns2 = map(chns, i_chn_morevars) do chn, is_more
-        is_more ? chn[:,par_names_int,:] : chn
+    # also remove variables from sections
+    chn1 = first(chns)
+    name_map_int = Dict(map(sections(chn1)) do sec
+        names_int = intersect( names(chn1, sec), par_names_int)
+        sec => names_int
+    end)
+    #i_chn_morevars = length.(par_names) .> length(par_names_int)
+    # chns2 = map(chns, i_chn_morevars) do chn, is_more
+    #     is_more ? chn[:,par_names_int,:] : chn
+    # end
+    chns2 = map(chns) do chn
+        #chn[:,par_names_int,:]  # does not reorder columns
+        chains_par(chn, par_names_int)
     end
     # reduce to same minimum sample number
-    fsubsample = (chn) -> Chains(chn[rand(1:size(chn,1), n_min),:,:].value, names(chn), chn.name_map)
+    #fsubsample = (chn) -> Chains(chn[rand(1:size(chn,1), n_min),:,:].value, names(chn), chn.name_map)
+    fsubsample = (chn) -> Chains(chn[rand(1:size(chn,1), n_min),:,:].value, names(chn), name_map_int)
     n_min, n_max = extrema(map(x -> size(x,1), chns))
     chns3 = map(chns2) do chn
         size(chn,1) == n_min ? resetrange(chn) : fsubsample(chn)
@@ -72,3 +84,26 @@ by given names (symbols)
 """
 rename_chain_pars(chn, popt_names) = replacenames(
     chn, Dict(MCMCChains.names(chn, :parameters) .=> popt_names))
+
+
+    """
+    construct_chains_from_csv(chn_df; fsections=(vars)->Dict(...))
+
+Reconstruct a MCMCChains object from DataFrame, `chn_df`, as produced by `CSV.write`, 
+i.e. with columns
+`iteration`,`chain`, `parameters`+, `internals`+.
+
+function `fsections(vars)` must return a Dictionary passed to `MCMCChains.set_section`.
+The default assumes that starting from symbol :lp all variables belong to section internals,
+and all variables before to the standard section parameters.
+"""
+function construct_chains_from_csv(chn_df; 
+    fsections=(vars)->Dict(:internals=>vars[findfirst(==(:lp), vars):end])
+    )
+    as = map(pairs(groupby(chn_df, :chain))) do (i, subdf)
+        Array(select(subdf, DataFrames.Not(1:2)))
+    end
+    a = reduce((x, y) -> cat(x, y; dims = 3), as)
+    MCMCChains.Chains(a, names(chn_df)[3:end], fsections(propertynames(chn_df)[3:end]))
+end
+

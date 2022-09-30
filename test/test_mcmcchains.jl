@@ -27,6 +27,7 @@ end;
     # different number of samles, parameters, and chains
     # different sections (copy from chn1, but merge with chn1s)
     chn2 = chn1[3:100, 1:3, 1]
+    #chn2 = chn1s[3:100, 1:3, 1]
     chn = chainscat_resample([chn1s, chn2])
     @test convert(Array,chn.value[:,:,[3]]) == convert(Array,chn2.value)
     @test chn.name_map == (parameters = [:a, :b], internals = [:c])
@@ -41,6 +42,17 @@ end;
 @testset "rename_chain_pars" begin
     chn = rename_chain_pars(chn1s, [:a1,:b1])
     @test chn.name_map == (parameters = [:a1, :b1], internals = [:c, :d])
+end;
+
+@testset "backup_restore to CSV" begin
+    chn = MCMCChains.Chains(rand(500,4,2), [:a0,:lp, :u10, :u20], Dict(:internals=>[:lp,:u10, :u20]))
+    #path,  io = mktemp()
+    mktemp() do path, io
+        CSV.write(path, chn)
+        chn2 = construct_chains_from_csv(CSV.read(path, DataFrames.DataFrame))
+        @test chn2.value == chn.value
+        @test names(chn2, :internals) == names(chn, :internals)
+    end
 end;
 
 
