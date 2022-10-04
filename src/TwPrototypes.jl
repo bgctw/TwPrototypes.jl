@@ -21,7 +21,8 @@ export Chains_section, add_vars, chainscat_resample, chains_par, rename_chain_pa
 export construct_chains_from_csv
 
 
-using SimpleTraits    
+using SimpleTraits: Trait, istrait, @traitdef, @traitimpl, @traitfn  
+import SimpleTraits
 using DataFrames
 import Pkg
 using Requires: @require 
