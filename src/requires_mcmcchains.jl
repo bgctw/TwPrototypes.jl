@@ -101,7 +101,7 @@ function construct_chains_from_csv(chn_df;
     fsections=(vars)->Dict(:internals=>vars[findfirst(==(:lp), vars):end])
     )
     as = map(pairs(groupby(chn_df, :chain))) do (i, subdf)
-        Array(select(subdf, DataFrames.Not(1:2)))
+        Array(select(subdf, Not(1:2)))
     end
     a = reduce((x, y) -> cat(x, y; dims = 3), as)
     MCMCChains.Chains(a, names(chn_df)[3:end], fsections(propertynames(chn_df)[3:end]))
