@@ -1,8 +1,16 @@
-@info "TwPrototypes: loading AlgebraOfGraphics utils"
-using .AlgebraOfGraphics # syntax by Requires.jl otherwise warning
-using .CairoMakie
+module TwPrototypesAoGExt
 
-function set_default_CMTheme!(;makie_config=MakieConfig())
+function __init__()
+    @info "TwPrototypes: loading TwPrototypesAoGExt"
+end
+
+
+isdefined(Base, :get_extension) ? 
+    (using CairoMakie,AlgebraOfGraphics) : (using ..CairoMakie,..AlgebraOfGraphics)
+import TwPrototypes as CM
+using TwPrototypes
+    
+function CM.set_default_CMTheme!(;makie_config=MakieConfig())
     set_aog_theme!()
     local cfg = makie_config
     legend_theme = Theme(
@@ -47,11 +55,11 @@ end
 """
 Draw aog plot into Makie figure and legend into subfigue
 """
-function draw_with_legend!(fig, plt; fig_pos_legend = fig[1,2], kwargs...)
+function CM.draw_with_legend!(fig, plt; fig_pos_legend = fig[1,2], kwargs...)
     local _legend = draw!(fig[1,1], plt)
     legend!(fig_pos_legend, _legend)
     _legend
 end
 
-
+end # module
 
