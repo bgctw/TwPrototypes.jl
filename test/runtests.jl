@@ -1,6 +1,6 @@
 tmp_f = function()
     pop!(LOAD_PATH)
-    push!(LOAD_PATH, "/User/homes/twutz/twutz/julia/18_tools/devtools")
+    push!(LOAD_PATH, expanduser("~/twutz/julia/18_tools/devtools"))
 end
 
 using Test

@@ -1,7 +1,7 @@
 module TwPrototypesCairoMakieExt
 
 function __init__()
-    @info "TwPrototypes: loading CairoMakie utils"
+    @info "TwPrototypes: loading TwPrototypesCairoMakieExt"
 end
 
 isdefined(Base, :get_extension) ? (using CairoMakie) : (using ..CairoMakie)
@@ -15,9 +15,9 @@ function CM.pdf_figure_axis(args...; makie_config::MakieConfig = MakieConfig(), 
 end
 
 function CM.pdf_figure(; makie_config::MakieConfig = MakieConfig())
-    (;pt_per_unit, fontsize, size_inches) = makie_config
-    resolution = 72 .* size_inches ./ pt_per_unit # size_pt
-    fig = Figure(;resolution, fontsize = fontsize./ pt_per_unit)
+    local cfg = makie_config
+    resolution = 72 .* cfg.size_inches ./ cfg.pt_per_unit # size_pt
+    fig = Figure(;resolution, fontsize=cfg.fontsize ./ cfg.pt_per_unit)
 end
 function CM.pdf_figure(size_inches::NTuple{2}; makie_config::MakieConfig = MakieConfig())
     makie_config = MakieConfig(makie_config; size_inches)

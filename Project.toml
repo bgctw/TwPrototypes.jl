@@ -30,9 +30,9 @@ SimpleTraits = "0.9"
 julia = "1.6"
 
 [extensions]
-TwPrototypesMCMCChainsExt = "MCMCChains"
+TwPrototypesAoGExt = ["CairoMakie", "AlgebraOfGraphics"]
 TwPrototypesCairoMakieExt = "CairoMakie"
-TwPrototypesAoGExt = ["CairoMakie","AlgebraOfGraphics"]
+TwPrototypesMCMCChainsExt = "MCMCChains"
 
 [extras]
 AlgebraOfGraphics = "cbdf2221-f076-402e-a563-3d30da359d67"
