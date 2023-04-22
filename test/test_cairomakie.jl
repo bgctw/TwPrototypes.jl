@@ -1,3 +1,9 @@
+tmp_f = function()
+    push!(LOAD_PATH, "/User/homes/twutz/twutz/julia/makietools")
+    push!(LOAD_PATH, "/User/homes/twutz/twutz/julia/turingtools")
+    push!(LOAD_PATH, "/User/homes/twutz/twutz/julia/18_tools/makietools")
+    push!(LOAD_PATH, "/User/homes/twutz/twutz/julia/18_tools/turingtools")
+end
 using CairoMakie
 using AlgebraOfGraphics
 
@@ -46,13 +52,12 @@ i_test_larger_margins = () -> begin
 end
 
 @testset "density_params" begin
-    import AxisArrays
+    using AxisArrays: AxisArrays
     a = reshape(randn(40*3*2), (40,3,2));
     chn = AxisArrays.AxisArray(a; row=1:size(a,1), parameters=string.('a':'c'));
-    import CairoMakie as CM
     #plt = density_params(chn, AxisArrays.axes(chn,2));
     plt = density_params(chn, ["a","b"]);
     #display(plt)
-     @test plt isa CM.Figure
+     @test plt isa CairoMakie.Figure
 end;
 

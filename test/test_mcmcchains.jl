@@ -1,7 +1,10 @@
 i_loadlibs = () -> begin
     # may load from test environment from interactive or user-wide repos
-    push!(LOAD_PATH, expanduser("~/julia/scimltools/")) # access local package repo
-    push!(LOAD_PATH, expanduser("~/julia/turingtools/")) # access local package repo
+    push!(LOAD_PATH, expanduser("~/twutz/julia/scimltools/")) # access local package repo
+    push!(LOAD_PATH, expanduser("~/twutz/julia/turingtools/")) # access local package repo
+    #
+    push!(LOAD_PATH, expanduser("~/twutz/julia/18_tools/scimltools/")) # access local package repo
+    push!(LOAD_PATH, expanduser("~/twutz/julia/18_tools/turingtools/")) # access local package repo
 end
 using MCMCChains
 
