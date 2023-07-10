@@ -12,7 +12,8 @@ function Chains_section end
 Extend Chain `chn` by section consisting of variables var_ret. The variables are
 computed by function fgetvars(args), where args is a subset of a single sample in chain.
 The subset is taken by extracting variables var_arg.
-
+Note, that the fgetvars receives an AxisArray where the order of parameters does
+not necessarily correspond to var_arg
 TODO example, testcase, used in exploreP.add_obs
 """
 function add_vars end

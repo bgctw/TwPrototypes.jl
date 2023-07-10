@@ -7,7 +7,8 @@ end
 isdefined(Base, :get_extension) ? (using CairoMakie) : (using ..CairoMakie)
 import TwPrototypes as CM
 using TwPrototypes
-
+using Infiltrator
+using KernelDensity: KernelDensity
 
 function CM.pdf_figure_axis(args...; makie_config::MakieConfig = MakieConfig(), kwargs...) 
     fig = pdf_figure(args...; makie_config)
@@ -28,6 +29,7 @@ function CM.pdf_figure(width2height::Number; makie_config::MakieConfig = MakieCo
     makie_config = MakieConfig(makie_config; size_inches)
     pdf_figure(;makie_config)
 end
+
 
 function CM.save_with_config(filename::AbstractString, fig::Union{Figure, Makie.FigureAxisPlot, Scene}; makie_config = MakieConfig(), args...)
     local cfg = makie_config
@@ -98,6 +100,58 @@ function CM.density_params(chns, pars=names(chns, :parameters);
     #axislegend(only(contents(fig[2, column])))
     fig    
 end
+
+"""
+Histogram of several variables of a 3D array, i.e. MCMCChain.
+
+The desnity plot gives wrong impressions, if probability mass is concentrated
+at the borders,
+"""
+function histogram_params(chns, pars=names(chns, :parameters); 
+  makie_config::MakieConfig=MakieConfig(), 
+  fig = pdf_figure(cm2inch.((8.3,8.3/1.618)); makie_config), 
+  column = 1, xlims=nothing, 
+  labels=nothing, colors = nothing, ylabels = nothing, normalization = :pdf, 
+  kwargs_axis = repeat([()],length(pars)), 
+  ylimits = (0,1),
+  kwargs...
+  )
+  n_chains = size(chns,3)
+  n_samples = length(chns)
+  labels_ch = isnothing(labels) ? string.(1:n_chains) : string.(labels)
+  ylabels = isnothing(ylabels) ? string.(pars) : ylabels
+  !isnothing(xlims) && (length(xlims) != length(pars)) && error(
+      "Expected length(xlims)=$(length(xlims)) (each a Tuple or nothing) to be length(pars)=$(length(pars))")
+  for (i, param) in enumerate(pars)
+      ax = Axis(fig[i, column]; ylabel=ylabels[i], kwargs_axis[i]...)
+      ylims!(ax, ylimits)
+      if isnothing(colors)
+          colors = ax.palette.color[]
+      end
+      for i_chain in 1:n_chains
+          _values = chns[:, param, i_chain]
+          col = colors[i_chain]
+          hist!(ax, _values; label=labels_ch[i_chain], color = (col, 0.3), strokecolor = col, strokewidth = 1, 
+          normalization,
+              #strokearound = true,
+              kwargs...)
+      end
+      xlim = passnothing(getindex)(xlims, i)
+      !isnothing(xlim) && xlims!(ax, xlim)
+  #hideydecorations!(ax,  ticklabels=false, ticks=false, grid=false)
+      hideydecorations!(ax, label=false, ticklabels=true)
+      # if i < length(params)
+      #     hidexdecorations!(ax; grid=false)
+      # else
+      #     ax.xlabel = "Parameter estimate"
+      # end
+  end
+  # axes = [only(contents(fig[i, 2])) for i in 1:length(params)]
+  # linkxaxes!(axes...)
+  #axislegend(only(contents(fig[2, column])))
+  fig    
+end
+
 
 
 end

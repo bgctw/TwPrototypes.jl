@@ -8,6 +8,7 @@ isdefined(Base, :get_extension) ? (using MCMCChains) : (using ..MCMCChains)
 import TwPrototypes as CM
 using TwPrototypes
 using DataFrames
+using Infiltrator
 
 function CM.Chains_section(a::AbstractArray, section::Symbol)
     varnames = [string(section)*"["*string(i)*"]" for i in 1:size(a,2)]
@@ -17,7 +18,8 @@ function CM.Chains_section(a::AbstractArray, section::Symbol, varnames)
     Chains(a, varnames, Dict(section => varnames))
 end
 
-function CM.add_vars(fgetvars::Function, chn, section::Symbol, var_ret::AbstractArray{Symbol}, var_arg = names(chn,[:parameters]))
+function CM.add_vars(fgetvars::Function, chn, section::Symbol, 
+    var_ret::AbstractArray{Symbol}, var_arg = names(chn,[:parameters]))
     # var_ret = symbol.(var_obs)
     # var_arg = names(chn,[:parameters, :u0])
     #tmp_vars = mapslices(identity, chn[:,index_vars,:].value, dims=(2))
@@ -26,11 +28,18 @@ function CM.add_vars(fgetvars::Function, chn, section::Symbol, var_ret::Abstract
     if chains(chn) != chains(chn_obs)
         chn = Chains(chn.value, names(chn), chn.name_map)
     end
+    names_double=intersect(names(chn), names(chn_obs))
+    if length(names_double)!=0
+        error("Adding variables ot a chain requires uniqe names. " *
+        "Found following nonunique names: " * join(names_double,", "))
+    end
+    # @show intersect(names(chn), names(chn_obs))
+    # @infiltrate
     chn_ext = hcat(chn, chn_obs)
 end
 
 function CM.chainscat_resample(chns) 
-    # reduce to subset of variables
+    # reduce to shared subset of variables
     par_names = names.(chns)
     par_names_int = reduce(intersect, par_names)
     # also remove variables from sections
@@ -57,8 +66,15 @@ function CM.chainscat_resample(chns)
     chn_exti = chainscat(chns3...)
 end
 
-CM.chains_par(chns, par_names) = set_section(chns[:,par_names,:], Dict(:parameters => par_names))
-#chains_par(chns, par_names) = Chains(chns[:,par_names,:].value, par_names)
+
+#does not preserve order in par_names
+#CM.chains_par(chns, par_names) = set_section(chns[:,par_names,:], Dict(:parameters => par_names))
+# indexing into chns or chns.value also does not preserve order of par_names
+#CM.chains_par(chns, par_names) = Chains(chns[:,par_names,:].value, par_names)
+# need to extract each variable separately and bind_col afterwards
+function CM.chains_par(chns, par_names) 
+    Chains(hcat(map(x -> chns.value[:,[x],:], par_names)...), par_names)
+end
 
 
 CM.rename_chain_pars(chn, popt_names) = replacenames(

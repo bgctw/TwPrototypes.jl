@@ -26,9 +26,9 @@ include("util.jl")
 include("data_management.jl")
 
 include("makie_util.jl")
-export cm2inch, golden_ratio, MakieConfig
+export cm_per_inch, cm2inch, golden_ratio, MakieConfig
 export pdf_figure, pdf_figure_axis, save_with_config, ppt_MakieConfig, paper_MakieConfig
-export hidexdecoration!, hideydecoration!, axis_contents, density_params
+export hidexdecoration!, hideydecoration!, axis_contents, density_params, histogram_params
 
 include("aog_util.jl")
 export set_default_CMTheme!, draw_with_legend!

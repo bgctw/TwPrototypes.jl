@@ -1,6 +1,8 @@
 using Parameters: @with_kw
 import KernelDensity
 
+cm_per_inch = 2.54
+
 """
     cm2inch(x)
     cm2inch(x1, x2, x...)
@@ -8,9 +10,10 @@ import KernelDensity
 Convert length in cm to inch units: 1 inch = 2.54  
 The single argument returns a value, the multiple argument version a Tuple.
 """
-cm2inch(x) = x/2.54
+cm2inch(x) = x/cm_per_inch
 #cm2inch(x1, x2, args...) = (cm2inch(x) for x in (x1,x2,args...))
 cm2inch(x1, x2, args...) = Tuple(cm2inch(x) for x in (x1,x2,args...))
+
 
 const golden_ratio = 1.618
 
@@ -24,9 +27,11 @@ end
 
 
 #ppt_MakieConfig(;target = :presentation, pt_per_unit = 0.75/2, filetype = "png", fontsize=18, size_inches = cm2inch.((29,29/golden_ratio)), kwargs...) = MakieConfig(;target, pt_per_unit, filetype, fontsize, size_inches, kwargs...)
-ppt_MakieConfig(;target = :presentation, filetype = "png", fontsize=18, size_inches = cm2inch.((16,16/golden_ratio)), kwargs...) = MakieConfig(;target, filetype, fontsize, size_inches, kwargs...)
 # size so that orginal size covers half a wide landscape slide of 33cm
 # svg does not work properly with fonts in ppt/wps
+#ppt_MakieConfig(;target = :presentation, filetype = "png", fontsize=18, size_inches = cm2inch.((16,16/golden_ratio)), kwargs...) = MakieConfig(;target, filetype, fontsize, size_inches, kwargs...)
+# target of 10inch wide screen slide
+ppt_MakieConfig(;target = :presentation, filetype = "png", fontsize=18, size_inches = (5.0,5.0/golden_ratio), kwargs...) = MakieConfig(;target, filetype, fontsize, size_inches, kwargs...)
 
 paper_MakieConfig(size_inches = cm2inch.((8.3,8.3/golden_ratio)), kwargs...) = MakieConfig(;size_inches, kwargs...)
 
