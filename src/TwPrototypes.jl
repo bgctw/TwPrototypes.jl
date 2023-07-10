@@ -37,6 +37,10 @@ include("chains_util.jl")
 export Chains_section, add_vars, chainscat_resample, chains_par, rename_chain_pars
 export construct_chains_from_csv
 
+export slurm_execute
+export AbstractSrunBuilder, LocalSrunBuilder, BasicSrunBuilder, build_srun_command
+include("util_slurm.jl")
+
 if !isdefined(Base, :get_extension)
     using Requires
 end
