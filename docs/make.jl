@@ -10,7 +10,7 @@ makedocs(sitename="TwPrototypes.jl",
             "Data management" => "data_management.md",
             "Dispatch" => "isofeltype.md",
          ],
-         modules = [TwPrototypes],
+         #modules = [TwPrototypes],
          format = Documenter.HTML(prettyurls = false)
 )
 # Documenter can also automatically deploy documentation to gh-pages.
