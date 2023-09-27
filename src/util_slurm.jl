@@ -1,4 +1,11 @@
 """
+  slurm_execute(julia_snippet, njobs=1, nthreads=1;
+    srun_builder = BasicSrunBuilder(),
+    cmd_julia = "julia -t \$nthreads --project --startup-file=no",
+    shell = "/bin/sh",
+    is_verbose = false,
+    )
+
 Schedule the execution of the snippet of julia code `njobs` times 
 at the cluster, and wait for all jobs to finish.
 
@@ -51,6 +58,7 @@ build_srun_command(srb::LocalSrunBuilder, nthreads) = ""
 struct BasicSrunBuilder{IT} <: AbstractSrunBuilder
   mem_GB::IT
   time_hours::IT
+  partition::String15
 end
 
 """
@@ -63,8 +71,9 @@ srun-command with specified
 - time_hours: maximum execution time (integer hours)
 - nthreads: cpus-per-task
 """
-BasicSrunBuilder(;mem_GB=20,time_hours=48) = BasicSrunBuilder(mem_GB,time_hours)
+BasicSrunBuilder(;mem_GB=20,time_hours=48, partition="") = BasicSrunBuilder(mem_GB,time_hours,String15(partition))
 
 function build_srun_command(builder::BasicSrunBuilder, nthreads)
-  "srun --mem=$(builder.mem_GB)GB --time=$(builder.time_hours):00:00 --cpus-per-task=$nthreads"
+  partitionstr = isempty(builder.partition) ? "" : "-p " * builder.partition * " " 
+  "srun " * partitionstr * "--mem=$(builder.mem_GB)GB --time=$(builder.time_hours):00:00 --cpus-per-task=$nthreads"
 end

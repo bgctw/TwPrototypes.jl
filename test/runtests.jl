@@ -8,6 +8,10 @@ using TwPrototypes
 import DataFrames
 import CSV
 
+@testset "util_slurm" begin
+    include("test_util_slurm.jl")
+end
+
 @testset "non-required" begin
     #TODO resolve SimpleTraits issue https://github.com/mauro3/SimpleTraits.jl/issues/83
     include("test_isofeltype.jl")
