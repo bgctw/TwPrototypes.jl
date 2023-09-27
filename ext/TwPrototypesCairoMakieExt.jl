@@ -5,33 +5,34 @@ function __init__()
 end
 
 isdefined(Base, :get_extension) ? (using CairoMakie) : (using ..CairoMakie)
-import TwPrototypes as CM
+import TwPrototypes as CP
 using TwPrototypes
 using Infiltrator
 using KernelDensity: KernelDensity
+using StatsBase
 
-function CM.pdf_figure_axis(args...; makie_config::MakieConfig = MakieConfig(), kwargs...) 
+function CP.pdf_figure_axis(args...; makie_config::MakieConfig = MakieConfig(), kwargs...) 
     fig = pdf_figure(args...; makie_config)
     fig, Axis(fig[1,1]; kwargs...)
 end
 
-function CM.pdf_figure(; makie_config::MakieConfig = MakieConfig())
+function CP.pdf_figure(; makie_config::MakieConfig = MakieConfig())
     local cfg = makie_config
     resolution = 72 .* cfg.size_inches ./ cfg.pt_per_unit # size_pt
     fig = Figure(;resolution, fontsize=cfg.fontsize ./ cfg.pt_per_unit)
 end
-function CM.pdf_figure(size_inches::NTuple{2}; makie_config::MakieConfig = MakieConfig())
+function CP.pdf_figure(size_inches::NTuple{2}; makie_config::MakieConfig = MakieConfig())
     makie_config = MakieConfig(makie_config; size_inches)
     pdf_figure(;makie_config)
 end
-function CM.pdf_figure(width2height::Number; makie_config::MakieConfig = MakieConfig())
+function CP.pdf_figure(width2height::Number; makie_config::MakieConfig = MakieConfig())
     size_inches = (makie_config.size_inches[1], makie_config.size_inches[1]/width2height)
     makie_config = MakieConfig(makie_config; size_inches)
     pdf_figure(;makie_config)
 end
 
 
-function CM.save_with_config(filename::AbstractString, fig::Union{Figure, Makie.FigureAxisPlot, Scene}; makie_config = MakieConfig(), args...)
+function CP.save_with_config(filename::AbstractString, fig::Union{Figure, Makie.FigureAxisPlot, Scene}; makie_config = MakieConfig(), args...)
     local cfg = makie_config
     pathname, ext = splitext(filename) 
     ext != "" && @warn "replacing extension $ext by $(cfg.filetype)"
@@ -44,22 +45,24 @@ function CM.save_with_config(filename::AbstractString, fig::Union{Figure, Makie.
     filename_cfg
 end
 
-CM.hidexdecoration!(ax; label = false, ticklabels = false, ticks = false, grid = false, minorgrid = false, minorticks = false, kwargs...) = hidexdecorations!(ax; label, ticklabels, ticks, grid, minorgrid, minorticks, kwargs...)
+CP.hidexdecoration!(ax; label = false, ticklabels = false, ticks = false, grid = false, minorgrid = false, minorticks = false, kwargs...) = hidexdecorations!(ax; label, ticklabels, ticks, grid, minorgrid, minorticks, kwargs...)
 
-CM.hideydecoration!(ax; label = false, ticklabels = false, ticks = false, grid = false, minorgrid = false, minorticks = false, kwargs...) = hideydecorations!(ax; label, ticklabels, ticks, grid, minorgrid, minorticks, kwargs...)
+CP.hideydecoration!(ax; label = false, ticklabels = false, ticks = false, grid = false, minorgrid = false, minorticks = false, kwargs...) = hideydecorations!(ax; label, ticklabels, ticks, grid, minorgrid, minorticks, kwargs...)
 
-CM.axis_contents(axis::Axis) = axis
-CM.axis_contents(figpos::GridLayout) = axis_contents(first(contents(figpos)))
-CM.axis_contents(figpos::GridPosition) = axis_contents(first(contents(figpos)))
+CP.axis_contents(axis::Axis) = axis
+CP.axis_contents(figpos::GridLayout) = axis_contents(first(contents(figpos)))
+CP.axis_contents(figpos::GridPosition) = axis_contents(first(contents(figpos)))
 
 
-# plot density from MCMCChains.value
-function CM.density_params(chns, pars=names(chns, :parameters); 
+# plot density from MCPCChains.value
+function CP.density_params(chns, pars=names(chns, :parameters); 
     makie_config::MakieConfig=MakieConfig(), 
     fig = pdf_figure(cm2inch.((8.3,8.3/1.618)); makie_config), 
     column = 1, xlims=nothing, 
     labels=nothing, colors = nothing, ylabels = nothing, normalize = false, 
-    kwargs_axis = repeat([()],length(pars)), kwargs...
+    kwargs_axis = repeat([()],length(pars)), 
+    prange = (0.025, 0.975), # do not extend x-scale to outliers
+    kwargs...
     )
     n_chains = size(chns,3)
     n_samples = length(chns)
@@ -68,12 +71,16 @@ function CM.density_params(chns, pars=names(chns, :parameters);
     !isnothing(xlims) && (length(xlims) != length(pars)) && error(
         "Expected length(xlims)=$(length(xlims)) (each a Tuple or nothing) to be length(pars)=$(length(pars))")
     for (i, param) in enumerate(pars)
-        ax = Axis(fig[i, column]; ylabel=ylabels[i], kwargs_axis[i]...)
+        ax = Axis(fig[i, column]; ylabel=ylabels[i], yaxisposition = :right, kwargs_axis[i]...)
         if isnothing(colors)
             colors = ax.palette.color[]
         end
         for i_chain in 1:n_chains
             _values = chns[:, param, i_chain]
+            if !isnothing(prange)
+                qmin,qmax = StatsBase.quantile(_values, prange)
+                _values = _values[qmin .<= _values .<= qmax]
+            end
             col = colors[i_chain]
             if normalize
                 k = KernelDensity.kde(_values)
@@ -102,7 +109,7 @@ function CM.density_params(chns, pars=names(chns, :parameters);
 end
 
 """
-Histogram of several variables of a 3D array, i.e. MCMCChain.
+Histogram of several variables of a 3D array, i.e. MCPCChain.
 
 The desnity plot gives wrong impressions, if probability mass is concentrated
 at the borders,

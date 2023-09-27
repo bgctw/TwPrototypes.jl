@@ -18,6 +18,7 @@ using DataFrames
 import Pkg
 import ComponentArrays as CA
 import CSV
+using InlineStrings
 using Infiltrator
 
 include("isofeltype.jl")
