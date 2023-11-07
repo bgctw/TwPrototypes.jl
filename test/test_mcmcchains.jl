@@ -40,6 +40,12 @@ end;
     chn = chains_par(chn1s, [:b,:c])
     @test convert(Array,chn.value) == convert(Array,chn1s.value[:,[:b,:c],:])
     @test chn.name_map == (parameters = [:b, :c],)
+    # 
+    name_map = [:parameters=>[:b], :user=>[:c]]
+    chn = chains_par(chn1s, [:b,:c]; name_map)
+    @test convert(Array,chn.value) == convert(Array,chn1s.value[:,[:b,:c],:])
+    @test collect(keys(chn.name_map)) == first.(name_map)
+    @test collect(values(chn.name_map)) == last.(name_map)
 end;
 
 @testset "rename_chain_pars" begin

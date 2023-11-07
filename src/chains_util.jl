@@ -27,10 +27,12 @@ Sections are taken from first chain.
 function chainscat_resample end
 
 """
-    chains_par(chns, par_names)
+    chains_par(chns, par_names; name_map=(parameters = par_names,))
 
-Construct chain of given parameters of original chain. This helps to 
-plot variables that are not in the :parameters section
+Construct chain of given parameters of original chain in the order of par_names. 
+By default all colums are associated with section :parameters, which helps to 
+plot variables that are not in the :parameters section. A customized name_map
+can be provided.
 """
 function chains_par end
 

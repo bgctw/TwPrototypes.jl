@@ -44,17 +44,18 @@ function CM.chainscat_resample(chns)
     par_names_int = reduce(intersect, par_names)
     # also remove variables from sections
     chn1 = first(chns)
-    name_map_int = Dict(map(sections(chn1)) do sec
+    name_map_int = map(sections(chn1)) do sec
         names_int = intersect( names(chn1, sec), par_names_int)
         sec => names_int
-    end)
+    end
     #i_chn_morevars = length.(par_names) .> length(par_names_int)
     # chns2 = map(chns, i_chn_morevars) do chn, is_more
     #     is_more ? chn[:,par_names_int,:] : chn
     # end
     chns2 = map(chns) do chn
         #chn[:,par_names_int,:]  # does not reorder columns
-        chains_par(chn, par_names_int)
+        #chains_par(chn, par_names_int) # does not preserve name_map
+        chains_par(chn, par_names_int; name_map = name_map_int) 
     end
     # reduce to same minimum sample number
     #fsubsample = (chn) -> Chains(chn[rand(1:size(chn,1), n_min),:,:].value, names(chn), chn.name_map)
@@ -72,10 +73,9 @@ end
 # indexing into chns or chns.value also does not preserve order of par_names
 #CM.chains_par(chns, par_names) = Chains(chns[:,par_names,:].value, par_names)
 # need to extract each variable separately and bind_col afterwards
-function CM.chains_par(chns, par_names) 
-    Chains(hcat(map(x -> chns.value[:,[x],:], par_names)...), par_names)
+function CM.chains_par(chns, par_names; name_map=(parameters = par_names,)) 
+    Chains(hcat(map(x -> chns.value[:,[x],:], par_names)...), par_names, name_map)
 end
-
 
 CM.rename_chain_pars(chn, popt_names) = replacenames(
     chn, Dict(MCMCChains.names(chn, :parameters) .=> popt_names))
