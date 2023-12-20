@@ -14,7 +14,8 @@ The code snipped may determine the job-id by
 """
 function slurm_execute(julia_snippet, njobs=1, nthreads=1;
   srun_builder = BasicSrunBuilder(),
-  cmd_julia = "julia -t $nthreads --project --startup-file=no",
+  # the mljulia bash script calls  'module load julia' before invokingn julia
+  cmd_julia = "mljulia -t $nthreads --project --startup-file=no",
   shell = "/bin/sh",
   is_verbose = false,
   )
