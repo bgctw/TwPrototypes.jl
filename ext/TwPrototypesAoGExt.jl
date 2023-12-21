@@ -10,6 +10,15 @@ isdefined(Base, :get_extension) ?
 import TwPrototypes as CM
 using TwPrototypes
     
+"""
+    set_default_CMTheme!(;makie_config=MakieConfig())
+
+Setting sensible defaults with taking care of pt_per_unit in MakieConfig.
+
+When saving png, there is a difference in size between the produced figure 
+in print and display on a monitor and its dpi settings.
+This routine adjusts several seetings given in inch by deviding `makie_config.pt_per_unit`.
+"""
 function CM.set_default_CMTheme!(;makie_config=MakieConfig())
     set_aog_theme!()
     local cfg = makie_config

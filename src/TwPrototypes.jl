@@ -19,7 +19,6 @@ import Pkg
 import ComponentArrays as CA
 import CSV
 using InlineStrings
-using Infiltrator
 
 include("isofeltype.jl")
 include("pkg_utils.jl")
