@@ -8,7 +8,6 @@ isdefined(Base, :get_extension) ? (using MCMCChains) : (using ..MCMCChains)
 import TwPrototypes as CM
 using TwPrototypes
 using DataFrames
-using Infiltrator
 
 function CM.Chains_section(a::AbstractArray, section::Symbol)
     varnames = [string(section)*"["*string(i)*"]" for i in 1:size(a,2)]

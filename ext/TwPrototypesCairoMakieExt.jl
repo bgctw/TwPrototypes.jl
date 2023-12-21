@@ -7,7 +7,6 @@ end
 isdefined(Base, :get_extension) ? (using CairoMakie) : (using ..CairoMakie)
 import TwPrototypes as CP
 using TwPrototypes
-using Infiltrator
 using KernelDensity: KernelDensity
 using StatsBase
 
@@ -54,7 +53,7 @@ CP.axis_contents(figpos::GridLayout) = axis_contents(first(contents(figpos)))
 CP.axis_contents(figpos::GridPosition) = axis_contents(first(contents(figpos)))
 
 
-# plot density from MCPCChains.value
+# plot density from MCMCChains.value
 function CP.density_params(chns, pars=names(chns, :parameters); 
     makie_config::MakieConfig=MakieConfig(), 
     fig = pdf_figure(cm2inch.((8.3,8.3/1.618)); makie_config), 
