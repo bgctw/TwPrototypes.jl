@@ -41,6 +41,9 @@ export slurm_execute
 export AbstractSrunBuilder, LocalSrunBuilder, BasicSrunBuilder, build_srun_command
 include("util_slurm.jl")
 
+export downgrade_project
+include("version_util.jl")
+
 if !isdefined(Base, :get_extension)
     using Requires
 end
