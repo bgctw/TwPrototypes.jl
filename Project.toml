@@ -14,7 +14,6 @@ Pkg = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
 Requires = "ae029012-a4dd-5104-9daa-d747884805df"
 SimpleTraits = "699a6c99-e7fa-54fc-8d76-47d257e15c1d"
 StatsBase = "2913bbd2-ae8a-5f71-8c99-4fb6c76f3a91"
-Unitful = "1986cc42-f94f-5a68-af5c-568840ba703d"
 
 [weakdeps]
 AlgebraOfGraphics = "cbdf2221-f076-402e-a563-3d30da359d67"
