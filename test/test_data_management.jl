@@ -1,3 +1,6 @@
+using Test
+using TwPrototypes
+
 @testset "parse_backup_path" begin
     #slc = (site = :LUE, targetlim = :lim_P, scenario = (:prior_sep,))
     project = "SesamFitSPP"

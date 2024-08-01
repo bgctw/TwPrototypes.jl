@@ -1,12 +1,18 @@
 i_loadlibs = () -> begin
     # may load from test environment from interactive or user-wide repos
-    push!(LOAD_PATH, expanduser("~/twutz/julia/scimltools/")) # access local package repo
-    push!(LOAD_PATH, expanduser("~/twutz/julia/turingtools/")) # access local package repo
+    push!(LOAD_PATH, "@scimltools") # access local package repo
+    push!(LOAD_PATH, "@turingtools") # access local package repo
     #
     push!(LOAD_PATH, expanduser("~/twutz/julia/18_tools/scimltools/")) # access local package repo
     push!(LOAD_PATH, expanduser("~/twutz/julia/18_tools/turingtools/")) # access local package repo
 end
+
+using Test
+using TwPrototypes
 using MCMCChains
+using DataFrames
+using CSV
+
 
 chn1 = Chains(rand(100, 4, 2), [:a, :b, :c, :d]);
 chn1s = set_section(chn1, Dict(:parameters => [:a,:b], :internals => [:c, :d]));

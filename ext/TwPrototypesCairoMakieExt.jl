@@ -17,8 +17,8 @@ end
 
 function CP.pdf_figure(; makie_config::MakieConfig = MakieConfig())
     local cfg = makie_config
-    resolution = 72 .* cfg.size_inches ./ cfg.pt_per_unit # size_pt
-    fig = Figure(;resolution, fontsize=cfg.fontsize ./ cfg.pt_per_unit)
+    size = 72 .* cfg.size_inches ./ cfg.pt_per_unit # size_pt
+    fig = Figure(;size, fontsize=cfg.fontsize ./ cfg.pt_per_unit)
 end
 function CP.pdf_figure(size_inches::NTuple{2}; makie_config::MakieConfig = MakieConfig())
     makie_config = MakieConfig(makie_config; size_inches)
@@ -72,7 +72,9 @@ function CP.density_params(chns, pars=names(chns, :parameters);
     for (i, param) in enumerate(pars)
         ax = Axis(fig[i, column]; ylabel=ylabels[i], yaxisposition = :right, kwargs_axis[i]...)
         if isnothing(colors)
-            colors = ax.palette.color[]
+            pal = fig.scene.theme.palette 
+            #pal = ax.palette
+            colors = pal.color[]
         end
         for i_chain in 1:n_chains
             _values = chns[:, param, i_chain]

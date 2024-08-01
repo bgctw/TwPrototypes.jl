@@ -1,3 +1,6 @@
+using Test
+using TwPrototypes
+
 @testset "BasicSrunBuilder" begin
     builder = BasicSrunBuilder()
     cmd = @inferred build_srun_command(builder, 4)

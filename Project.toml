@@ -26,9 +26,9 @@ TwPrototypesCairoMakieExt = "CairoMakie"
 TwPrototypesMCMCChainsExt = "MCMCChains"
 
 [compat]
-AlgebraOfGraphics = "0.6"
+AlgebraOfGraphics = "0.6, 0.7, 0.8"
 CSV = "0.10"
-CairoMakie = "0.10"
+CairoMakie = "0.10, 0.11, 0.12"
 ComponentArrays = "0.13, 0.14, 0.15"
 DataFrames = "1.4"
 InlineStrings = "1.4"
@@ -45,3 +45,6 @@ julia = "1.6"
 AlgebraOfGraphics = "cbdf2221-f076-402e-a563-3d30da359d67"
 CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
 MCMCChains = "c7f686f2-ff18-58e9-bc7b-31028e88f75d"
+
+[workspace]
+projects = ["test", "docs"]
