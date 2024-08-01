@@ -70,7 +70,7 @@ paper_MakieConfig(;size_inches = cm2inch.((8.3,8.3/golden_ratio)), kwargs...) = 
     pdf_figure = (size_inches = cm2inch.((8.3,8.3/golden_ratio)); fontsize=9, pt_per_unit = 0.75)
     pdf_figure_axis = (size_inches = cm2inch.((8.3,8.3/golden_ratio)); fontsize=9, pt_per_unit = 0.75, kwargs...)
 
-Creates a figure with specified resolution and fontsize 
+Creates a figure with specified resolution/size and fontsize 
 for given figure size. 
 `pdf_figure_axis`, in addition returns an Makie.Axis created with kwargs.
 They uses by default `pt_per_unit=0.75` to conform to png display and save. Remember to devide fontsize and other sizes specified elsewhere by this factor.
