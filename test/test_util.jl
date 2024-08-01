@@ -1,3 +1,6 @@
+using Test
+using TwPrototypes
+
 @testset "passnothing" begin
     sum_splice(args...) = sum(args)
     fn = passnothing(sum_splice)

@@ -1,9 +1,11 @@
 tmp_f = function()
-    push!(LOAD_PATH, "/User/homes/twutz/twutz/julia/makietools")
-    push!(LOAD_PATH, "/User/homes/twutz/twutz/julia/turingtools")
+    push!(LOAD_PATH, "@makietools")
+    push!(LOAD_PATH, "@turingtools")
     push!(LOAD_PATH, "/User/homes/twutz/twutz/julia/18_tools/makietools")
     push!(LOAD_PATH, "/User/homes/twutz/twutz/julia/18_tools/turingtools")
 end
+using Test
+using TwPrototypes
 using CairoMakie
 using AlgebraOfGraphics
 
@@ -58,6 +60,6 @@ end
     #plt = density_params(chn, AxisArrays.axes(chn,2));
     plt = density_params(chn, ["a","b"]);
     #display(plt)
-     @test plt isa CairoMakie.Figure
+    @test plt isa CairoMakie.Figure
 end;
 
