@@ -26,7 +26,7 @@ TwPrototypesCairoMakieExt = "CairoMakie"
 TwPrototypesMCMCChainsExt = "MCMCChains"
 
 [compat]
-AlgebraOfGraphics = "0.6"
+AlgebraOfGraphics = "0.6, 0.8"
 CSV = "0.10"
 CairoMakie = "0.10"
 ComponentArrays = "0.13, 0.14, 0.15"
