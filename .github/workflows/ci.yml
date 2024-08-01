@@ -22,7 +22,7 @@ jobs:
           - MCMCChains
           - CairoMakie
           #- JET
-      version:
+        version:
           - '1.6'  
           #- '1.10'
           - '1'
