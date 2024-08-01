@@ -16,21 +16,20 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        matrix:
-          # https://youtu.be/fQJrEQIRPZU?list=PLP8iPy9hna6Tze1CReUAQweWHyNdXaPNb&t=967
-          group:
-            - Basic
-            - MCMCChains
-            - CairoMakie
-            #- JET
-          version:
-            - '1.6'  
-            #- '1.10'
-            - '1'
-          os:
-            - ubuntu-latest
-          arch:
-            - x64
+        # https://youtu.be/fQJrEQIRPZU?list=PLP8iPy9hna6Tze1CReUAQweWHyNdXaPNb&t=967
+        group:
+          - Basic
+          - MCMCChains
+          - CairoMakie
+          #- JET
+      version:
+          - '1.6'  
+          #- '1.10'
+          - '1'
+        os:
+          - ubuntu-latest
+        arch:
+          - x64
     steps:
       - uses: actions/checkout@v2
       - uses: julia-actions/setup-julia@v1
