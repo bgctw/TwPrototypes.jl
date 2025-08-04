@@ -9,8 +9,6 @@ makedocs(sitename="TwPrototypes.jl",
             "Pkg utilities" => "pkg_utils.md",
             "Data management" => "data_management.md",
             "Dispatch" => "isofeltype.md",
-            "Makie" => "makie.md",
-            "AoG" => "aog.md",
          ],
          #modules = [TwPrototypes],
          format = Documenter.HTML(prettyurls = false)

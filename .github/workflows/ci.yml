@@ -20,7 +20,7 @@ jobs:
         group:
           - Basic
           - MCMCChains
-          - CairoMakie
+          #- CairoMakie
           #- JET
         version:
           - '1.10'  

@@ -7,3 +7,6 @@
 
 Concepts in Julia that have not found its proper package.
 
+Transferred to thwir own packages:
+- `FigureHelpers`: `pdf_figure`, Makie plots, ...
+

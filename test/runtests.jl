@@ -21,12 +21,6 @@ const GROUP = get(ENV, "GROUP", "All") # defined in in CI.yml
         @time @safetestset "test_mcmcchains" include("test_mcmcchains.jl")
     end
 
-    if GROUP == "All" || GROUP == "CairoMakie"
-        #join_path(test_path, ...) does not work, because test_path is unknown in new module
-        #@safetestset "Tests" include("test/test_cairomakie.jl")
-        @time @safetestset "test_cairomakie" include("test_cairomakie.jl")
-    end
-
     # if GROUP == "All" || GROUP == "JET"
     #     #@safetestset "Tests" include("test/test_JET.jl")
     #     @time @safetestset "test_JET" include("test_JET.jl")
