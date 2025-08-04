@@ -25,14 +25,6 @@ include("pkg_utils.jl")
 include("util.jl")
 include("data_management.jl")
 
-include("makie_util.jl")
-export cm_per_inch, cm2inch, golden_ratio, MakieConfig
-export pdf_figure, pdf_figure_axis, save_with_config, ppt_MakieConfig, paper_MakieConfig
-export hidexdecoration!, hideydecoration!, axis_contents, density_params, histogram_params
-
-include("aog_util.jl")
-export set_default_CMTheme!, draw_with_legend!
-
 include("chains_util.jl")
 export Chains_section, add_vars, chainscat_resample, chains_par, rename_chain_pars
 export construct_chains_from_csv

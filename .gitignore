@@ -1,3 +1,4 @@
 tmp
 pdf/*
 Manifest*.toml
+.vscode/settings.json
