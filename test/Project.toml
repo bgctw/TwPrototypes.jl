@@ -7,3 +7,12 @@ SafeTestsets = "1bc83da4-3b8d-516f-aca4-4fe02f6d838f"
 SimpleTraits = "699a6c99-e7fa-54fc-8d76-47d257e15c1d"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 TwPrototypes = "9ae22f58-2487-4805-bfc5-386577db46c7"
+
+[compat]
+AxisArrays = "0.4"
+CSV = "0.10"
+DataFrames = "1"
+MCMCChains = "6.0.7, 7"
+SafeTestsets = "0.1"
+SimpleTraits = "0.9"
+Test = "1"
